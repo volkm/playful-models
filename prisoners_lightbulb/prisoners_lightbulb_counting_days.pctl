@@ -1,0 +1,5 @@
+// Prisoners are released at some point
+"are_released": P>=1 [F "ended"];
+
+// Expected number of days until prisoners are released
+"days_till_released": R=? [F "ended"];

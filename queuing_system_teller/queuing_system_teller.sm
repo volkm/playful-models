@@ -1,0 +1,38 @@
+// Example of the influence of having multiple tellers in a queueing system.
+// based on: https://www.johndcook.com/blog/2008/10/21/what-happens-when-you-add-a-new-teller/
+
+ctmc
+
+const int MAX_QUEUE = 1000; // maximal number of customers waiting
+const int NO_TELLER = 1; // Should be 1 or 2
+
+const double arrival = 5.8; // per hour
+const double serving = 6; // per hour, mean time of 10 minutes per customer
+
+module queue
+
+    waiting : [0..MAX_QUEUE] init 0; // Number of waiting customers
+	busy : [0..NO_TELLER] init 0; // Number of busy tellers. Values < NO_TELLER indicate that at least one teller is free.
+
+    [new] (waiting < MAX_QUEUE & busy < NO_TELLER) -> arrival : (busy'=busy+1); // New customer is directly served
+    [new] (waiting < MAX_QUEUE & busy = NO_TELLER) -> arrival : (waiting'=waiting+1); // New customer is waiting
+    [served] (busy > 0 & waiting > 0) -> serving * busy : (waiting'=waiting-1); // Next customer is served
+    [served] (busy > 0 & waiting = 0) -> serving * busy : (busy'=busy-1); // Teller becomes free
+
+endmodule
+
+
+// Number of customers waiting
+rewards "customers"
+	true : waiting;
+endrewards
+
+// Total time spent waiting for all customers
+rewards "total_waiting_time"
+    waiting > 0: waiting;
+endrewards
+
+// Total number of customers
+rewards "total_customers"
+    [new] true : 1;
+endrewards

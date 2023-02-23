@@ -1,0 +1,8 @@
+// Leader does not make correct announcement
+"incorrect_answer": P>0 [F "leaderAllSeen" & !"allVisited"];
+
+// Expected number of days until prisoners are released
+"days_till_released": R=? [F "leaderAllSeen"];
+
+// Expected number of days until all prisoners have visited room at least once
+"days_till_all_visited": R=? [F "allVisited"];

@@ -1,0 +1,23 @@
+const int TIME = 10000; // Time bound in hours, used to approximate long run behaviour
+
+// Probability that queue is full in the long run
+"queue_full": S=? [waiting = MAX_QUEUE];
+
+"queue_full_within_time": P=? [F<=TIME waiting = MAX_QUEUE];
+
+// Expected number of waiting customers in the long run
+"waiting_lra": R{"customers"}=? [S];
+
+// Probability that a teller is free in the long run
+"non_busy_lra": S=? [busy < NO_TELLER];
+
+// Probability that the queue is empty in the long run
+"non_waiting_lra": S=? [waiting = 0];
+
+// Total waiting time of customers within the time bound
+"total_waiting_time": R{"total_waiting_time"}=? [C<=TIME];
+
+// Total number of customers within the time bound
+"total_customers": R{"total_customers"}=? [C<=TIME];
+
+// Expected waiting time can be computed via "total_waiting_time" / "total_customers"
